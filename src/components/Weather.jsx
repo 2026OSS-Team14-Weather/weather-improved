@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./weather.css";
+import SearchHistory from "./SearchHistory.jsx";
 
 // Import icons
 import clear_icon from "../assets/clear.png";
@@ -14,6 +15,13 @@ import wind_icon from "../assets/wind.png";
 const Weather = () => {
   const cityInputRef = useRef(null);
   const [weatherData, setWeatherData] = useState(null);
+  const [searchHistory, setSearchHistory] = useState(
+    () => {
+      const getSearchHistory = localStorage.getItem("searchHistory");   // 이전 검색 기록 가져오기
+
+      return getSearchHistory ? JSON.parse(getSearchHistory) : [];   // 검색 기록이 있으면 데이터를 배열로 변환, 없으면 빈 배열 사용
+    }
+  );
 
   const api_key = `${import.meta.env.VITE_API_KEY}`; // Replace with your API key
 
@@ -64,7 +72,10 @@ const Weather = () => {
         setWeatherData(null);
         return;
       }
+      
       setWeatherData(data);
+      setSearchHistory(prev => [...prev, city]);    // 검색한 도시를 기록 배열에 저장
+
     } catch (err) {
       alert("Error fetching weather data");
     }
@@ -75,6 +86,13 @@ const Weather = () => {
       handleSearch();
     }
   };
+
+  // 검색 기록이 변경되면 Effect가 실행되도록 하여 localStorage의 내용을 업데이트
+  useEffect(
+    () => {
+      localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+    }, [searchHistory]
+  );
 
   return (
     <div className="weather">
@@ -92,6 +110,11 @@ const Weather = () => {
           style={{ cursor: "pointer" }}
         />
       </div>
+
+      {!weatherData && (
+        <SearchHistory searchHistory={searchHistory} />
+      )}
+
       {weatherData && (
         <>
           <img
