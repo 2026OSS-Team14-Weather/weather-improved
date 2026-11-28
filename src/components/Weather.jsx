@@ -53,8 +53,11 @@ const Weather = () => {
     return weatherIcons[iconCode] || clear_icon;
   };
 
-  const handleSearch = async () => {
-    const city = cityInputRef.current.value.trim();
+  const handleSearch = async (clicked_city = null) => {
+    let city;
+
+    if (typeof clicked_city === "string")   city = clicked_city;    // 검색 기록에서 도시를 클릭했을 경우
+    else  city = cityInputRef.current.value.trim();   // 검색창에 직접 도시를 입력했을 경우
 
     if (!city) {
       alert("Enter city name");
@@ -83,6 +86,11 @@ const Weather = () => {
     } catch (err) {
       alert("Error fetching weather data");
     }
+  };
+
+  // 검색 기록 삭제
+  const handleClearHistory = () => {
+    setSearchHistory([]);
   };
 
   const handleKeyDown = (e) => {
@@ -116,7 +124,11 @@ const Weather = () => {
       </div>
 
       {!weatherData && (
-        <SearchHistory searchHistory={searchHistory} />
+        <SearchHistory
+          searchHistory={searchHistory}
+          onSearch={handleSearch}
+          onClear={handleClearHistory}
+        />
       )}
 
       {weatherData && (
