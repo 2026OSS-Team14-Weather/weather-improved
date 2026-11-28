@@ -1,9 +1,4 @@
 .error-box {
-    position: fixed;
-    inset: 10px;
-    inset : 0;
-    z-index: 10;
-    background: lightgray;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -19,14 +14,17 @@
     margin-top: 10px;
     font-size: 18px;
     font-weight: 600;
+    color : lightgray;
 }
 
 .error-desc {
     margin-top: 8px;
     font-size: 16px;
+    color : lightgray;
   }
   
   .error-plus {
     margin-top: 14px;
     font-size: 16px;
+    color : lightgray;
   }
