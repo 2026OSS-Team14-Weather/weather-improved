@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./weather.css";
+import ErrorMessage from "./ErrorMessage";
 
 // Import icons
 import clear_icon from "../assets/clear.png";
@@ -14,6 +15,7 @@ import wind_icon from "../assets/wind.png";
 const Weather = () => {
   const cityInputRef = useRef(null);
   const [weatherData, setWeatherData] = useState(null);
+  const [error,setError] = useState("");
 
   const api_key = `${import.meta.env.VITE_API_KEY}`; // Replace with your API key
 
@@ -59,14 +61,16 @@ const Weather = () => {
       const data = await res.json();
       console.log(data);
 
-      if (data.cod === "404") {
-        alert("City not found");
+      if (data.cod === 200) {
+        setWeatherData(data);
+        setError("");
+      } else {
         setWeatherData(null);
-        return;
+        setError(data.cod);
       }
-      setWeatherData(data);
     } catch (err) {
-      alert("Error fetching weather data");
+      setWeatherData(null);
+      setError("연결 오류");
     }
   };
 
@@ -92,6 +96,7 @@ const Weather = () => {
           style={{ cursor: "pointer" }}
         />
       </div>
+      <ErrorMessage error = {error}></ErrorMessage>
       {weatherData && (
         <>
           <img
