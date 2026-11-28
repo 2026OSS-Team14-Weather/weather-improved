@@ -1,6 +1,6 @@
 import "./SearchHistory.css";
 
-export default function SearchHistory({searchHistory, onSearch, onClear}) {
+export default function SearchHistory({ searchHistory, onSearch, onClear }) {
   return (
     <div className="search-history">
       <p>Search History</p>
@@ -8,8 +8,11 @@ export default function SearchHistory({searchHistory, onSearch, onClear}) {
       {searchHistory.map(city => (    // 각 도시를 버튼으로 만듦
         <button key={city} type="button" onClick={() => onSearch(city)}>{city}</button>
       ))}
-      
-      <button type="button" onClick={onClear}>Clear All</button>
+
+      {searchHistory.length > 0 && (  // 검색 기록이 있을 때만 버튼 표시
+          <button type="button" onClick={onClear}>Clear All</button>
+        )
+      }
     </div>
   );
 }
