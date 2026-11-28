@@ -10,7 +10,7 @@ export default function SearchHistory({ searchHistory, onSearch, onClear }) {
       ))}
 
       {searchHistory.length > 0 && (  // 검색 기록이 있을 때만 버튼 표시
-          <button type="button" onClick={onClear}>Clear All</button>
+          <button className="clear_btn" type="button" onClick={onClear}>Clear All</button>
         )
       }
     </div>

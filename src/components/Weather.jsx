@@ -56,8 +56,8 @@ const Weather = () => {
   const handleSearch = async (clicked_city = null) => {
     let city;
 
-    if (typeof clicked_city === "string")   city = clicked_city;    // 검색 기록에서 도시를 클릭했을 경우
-    else  city = cityInputRef.current.value.trim();   // 검색창에 직접 도시를 입력했을 경우
+    if (typeof clicked_city === "string") city = clicked_city;    // 검색 기록에서 도시를 클릭했을 경우
+    else city = cityInputRef.current.value.trim();   // 검색창에 직접 도시를 입력했을 경우
 
     if (!city) {
       alert("Enter city name");
@@ -107,58 +107,59 @@ const Weather = () => {
   );
 
   return (
-    <div className="weather">
-      <div className="search-bar">
-        <input
-          ref={cityInputRef}
-          type="text"
-          placeholder="Search"
-          onKeyDown={handleKeyDown}
-        />
-        <img
-          src={search_icon}
-          alt="search"
-          onClick={handleSearch}
-          style={{ cursor: "pointer" }}
-        />
-      </div>
-
-      {!weatherData && (
-        <SearchHistory
-          searchHistory={searchHistory}
-          onSearch={handleSearch}
-          onClear={handleClearHistory}
-        />
-      )}
-
-      {weatherData && (
-        <>
-          <img
-            src={getWeatherIcon()}
-            alt="weather icon"
-            className="weather-icon"
+    <>
+      <div className="weather">
+        <div className="search-bar">
+          <input
+            ref={cityInputRef}
+            type="text"
+            placeholder="Search"
+            onKeyDown={handleKeyDown}
           />
-          <p className="temperature">{Math.round(weatherData.main.temp)}°C</p>
-          <p className="city">{weatherData.name}</p>
-          <div className="details">
-            <div className="col">
-              <img src={humidity_icon} alt="humidity" />
-              <div>
-                <p>{weatherData.main.humidity}%</p>
-                <p>Humidity</p>
+          <img
+            src={search_icon}
+            alt="search"
+            onClick={handleSearch}
+            style={{ cursor: "pointer" }}
+          />
+        </div>
+
+        {weatherData && (
+          <>
+            <img
+              src={getWeatherIcon()}
+              alt="weather icon"
+              className="weather-icon"
+            />
+            <p className="temperature">{Math.round(weatherData.main.temp)}°C</p>
+            <p className="city">{weatherData.name}</p>
+            <div className="details">
+              <div className="col">
+                <img src={humidity_icon} alt="humidity" />
+                <div>
+                  <p>{weatherData.main.humidity}%</p>
+                  <p>Humidity</p>
+                </div>
+              </div>
+              <div className="col">
+                <img src={wind_icon} alt="wind" />
+                <div>
+                  <p>{Math.round(weatherData.wind.speed)} km/h</p>
+                  <p>Wind Speed</p>
+                </div>
               </div>
             </div>
-            <div className="col">
-              <img src={wind_icon} alt="wind" />
-              <div>
-                <p>{Math.round(weatherData.wind.speed)} km/h</p>
-                <p>Wind Speed</p>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+      
+      {/* 검색 기록 표시 */}
+      <SearchHistory
+        searchHistory={searchHistory} 
+        onSearch={handleSearch}
+        onClear={handleClearHistory}
+      />
+    </>
   );
 };
 
