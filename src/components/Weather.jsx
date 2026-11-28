@@ -72,9 +72,13 @@ const Weather = () => {
         setWeatherData(null);
         return;
       }
-      
+
       setWeatherData(data);
-      setSearchHistory(prev => [...prev, city]);    // 검색한 도시를 기록 배열에 저장
+      setSearchHistory(
+        prev => [
+          city, ...prev.filter(getSearchHistory => getSearchHistory.toLowerCase() !== city.toLowerCase())
+        ]
+      );
 
     } catch (err) {
       alert("Error fetching weather data");
