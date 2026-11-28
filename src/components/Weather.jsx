@@ -79,8 +79,8 @@ const Weather = () => {
       setWeatherData(data);
       setSearchHistory(
         prev => [
-          city, ...prev.filter(getSearchHistory => getSearchHistory.toLowerCase() !== city.toLowerCase())
-        ]
+          data.name, ...prev.filter(getSearchHistory => getSearchHistory.toLowerCase() !== data.name.toLowerCase())
+        ].slice(0, 5)   // 검색 기록은 최대 5개까지만 저장
       );
 
     } catch (err) {
@@ -107,7 +107,7 @@ const Weather = () => {
   );
 
   return (
-    <>
+    <div className="weather-container">
       <div className="weather">
         <div className="search-bar">
           <input
@@ -159,7 +159,7 @@ const Weather = () => {
         onSearch={handleSearch}
         onClear={handleClearHistory}
       />
-    </>
+    </div>
   );
 };
 
